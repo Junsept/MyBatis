@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+ 
+    <mapper namespace="pojo">
+    	<cache/>
+        <insert id="addProduct" parameterType="Product" >
+            insert into product (name, price) values (#{name}, #{price})    
+        </insert>
+        <select id="listProduct" resultType="Product">
+            select * from  product     
+        </select>
+         <delete id="deleteProduct" parameterType="Product" >
+            delete from product where id= #{id}   
+        </delete>
+        <select id="getProduct" parameterType="_int" resultType="Product">
+        	select * from product where id=#{id}
+        </select>
+        <select id="listProductByIdAndName" resultType="Product">
+        	<bind name="likename" value="'%' + name + '%'" />
+   		    select * from product 
+   		    <where>
+   		    	<if test="name!=null">
+   		    	and name like #{likename}
+   		    	<if test="price!=null">
+   		    	and price > #{price}
+   		    	</if>
+   		    </if> 
+   		    </where>
+   		    
+		</select>
+    </mapper>
